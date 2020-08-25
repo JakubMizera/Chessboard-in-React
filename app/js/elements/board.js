@@ -18,6 +18,8 @@ const Board = () => {
     positionArray[0][1].piece = "knight";
     positionArray[0][1].player= "black";
 
+
+
     const refreshBoard = () => {
 
     }
@@ -98,8 +100,7 @@ const Board = () => {
                     <div className='col white' data-row='6' data-col='0' onClick={handleMove.bind(this)}>2</div>
                     <div className='col black' data-row='6' data-col='1' onClick={handleMove.bind(this)}></div>
                     <div className='col white' data-row='6' data-col='2' onClick={handleMove.bind(this)}></div>
-                    <div className='col black' data-row='6' data-col='3' onClick={handleMove.bind(this)}><img
-                        src='../../images/pawn-white.svg'/></div>
+                    <div className='col black' data-row='6' data-col='3' onClick={handleMove.bind(this)}></div>
                     <div className='col white' data-row='6' data-col='4' onClick={handleMove.bind(this)}></div>
                     <div className='col black' data-row='6' data-col='5' onClick={handleMove.bind(this)}></div>
                     <div className='col white' data-row='6' data-col='6' onClick={handleMove.bind(this)}></div>
