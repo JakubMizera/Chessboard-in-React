@@ -10,6 +10,7 @@ class Board extends React.Component {
             style = {this.props.squares[i]? this.props.squares[i].style : null}
             shade = {squareShade}
             onClick={() => this.props.onClick(i)}
+            key = {i}
         />
     }
 
@@ -21,7 +22,7 @@ class Board extends React.Component {
                 const squareShade = (isEven(i) && isEven(j)) || (!isEven(i) && !isEven(j))? "light-square" : "dark-square";
                 squareRows.push(this.renderSquare((i*8) + j, squareShade));
             }
-            board.push(<div className="board-row">{squareRows}</div>)
+            board.push(<div key={i} className="board-row">{squareRows}</div>)
         }
 
         return (

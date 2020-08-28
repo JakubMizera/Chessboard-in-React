@@ -98,7 +98,7 @@ export default class Game extends React.Component {
     render() {
 
         return (
-            <div>
+            <div className="board">
                 <div className="game">
                     <div className="game-board">
                         <Board
@@ -107,10 +107,7 @@ export default class Game extends React.Component {
                         />
                     </div>
                     <div className="game-info">
-                        <h3>Turn</h3>
-                        <div id="player-turn-box" style={{backgroundColor: this.state.turn}}>
-
-                        </div>
+                        <h3>{this.state.turn} turn to move</h3>
                         <div className="game-status">{this.state.status}</div>
 
                         <div className="fallen-soldier-block">
