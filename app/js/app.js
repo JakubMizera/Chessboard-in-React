@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "../scss/main.scss";
 
-import Board from "./elements/board";
-import BoardV2 from "./elements/boardV2";
+import Game from "./elements/game";
+
 
 const App = () => {
     return (
-        <BoardV2/>
+        <Game/>
     )
 }
 
