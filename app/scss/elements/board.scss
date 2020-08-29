@@ -1,10 +1,13 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  background-color: #ECECEA;
+  background-color: #2e1000;
+  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 }
 
 .board {
   margin: 0 auto;
+
 
   .status {
     margin-bottom: 10px;
@@ -58,5 +61,6 @@ body {
     margin-bottom: 5px;
     font-size: 2rem;
     text-transform: capitalize;
+    color: #f5e4c9;
   }
 }

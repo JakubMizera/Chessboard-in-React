@@ -34,7 +34,8 @@ export default class Game extends React.Component {
                 });
             }
         } else if (this.state.sourceSelection > -1) {
-            //delete squares[this.state.sourceSelection].style.backgroundColor;
+            //delete squares[this.state.sourceSelection].style.backgroundColor; zmienić na klasy
+            console.log(squares[this.state.sourceSelection]);
             if (squares[i] && squares[i].player === this.state.player) {
                 this.setState({
                     status: "Wrong selection. Choose valid source and destination again.",
@@ -49,6 +50,7 @@ export default class Game extends React.Component {
                 const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
                 const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
+                //const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(this.state.sourceSelection, i, isDestEnemyOccupied);
 
                 if (isMovePossible && isMoveLegal) {
                     if (squares[i] !== null) {
