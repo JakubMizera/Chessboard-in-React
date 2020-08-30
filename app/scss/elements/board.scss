@@ -6,8 +6,7 @@ body {
 }
 
 .board {
-  margin: 0 auto;
-
+  margin-left: 100px;
 
   .status {
     margin-bottom: 10px;
@@ -46,6 +45,8 @@ body {
   .icons-attribution, .game-status, .fallen-soldier-block {
     margin-top: 20px;
     min-height: 50px;
+    color: #f5e4c9;
+    font-size: 2rem;
   }
 
 
@@ -62,5 +63,8 @@ body {
     font-size: 2rem;
     text-transform: capitalize;
     color: #f5e4c9;
+  }
+  .shadow {
+    background-color: black;
   }
 }
