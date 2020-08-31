@@ -24,17 +24,19 @@ export default class Game extends React.Component {
 
         if (this.state.sourceSelection === -1) {
             if (!squares[i] || squares[i].player !== this.state.player) {
-                this.setState({status: "Wrong selection. Choose player " + this.state.player + " pieces."});
-                //squares[i] ? delete squares[i].style.backgroundColor : null;
+                this.setState({status: "Wrong selection. Choose player " + this.state.turn + " pieces."});
+                squares[i].style = {...squares[i].style, backgroundColor: " "};
+
             } else {
-                //squares[i].style = {...squares[i].style, backgroundColor: "RGB(111,143,114)"};
+                squares[i].style = {...squares[i].style, backgroundColor: "rgb(55,83,67)"};
+
                 this.setState({
                     status: "Choose destination for the selected piece",
                     sourceSelection: i
                 });
             }
         } else if (this.state.sourceSelection > -1) {
-            //delete squares[this.state.sourceSelection].style.backgroundColor; zmienić na klasy
+            squares[this.state.sourceSelection].style = { ...squares[this.state.sourceSelection].style, backgroundColor: "" };
             console.log(squares[this.state.sourceSelection]);
             if (squares[i] && squares[i].player === this.state.player) {
                 this.setState({
@@ -48,6 +50,8 @@ export default class Game extends React.Component {
                 const blackFallenSoldiers = this.state.blackFallenSoldiers.slice();
                 const isDestEnemyOccupied = squares[i] ? true : false;
                 const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
+                console.log(isMovePossible);
+                console.log(squares[this.state.sourceSelection]);
                 const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
                 //const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(this.state.sourceSelection, i, isDestEnemyOccupied);
