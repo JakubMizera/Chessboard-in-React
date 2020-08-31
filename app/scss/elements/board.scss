@@ -1,4 +1,5 @@
 body {
+  box-sizing: border-box;
   font: 14px "Century Gothic", Futura, sans-serif;
   background-color: #262421;
   background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
@@ -40,11 +41,11 @@ body {
       left: -27px;
       font-size: 30px;
       color: #f0d9b5;
-      height: 806px;
+      height: 803px;
       width: 30px;
       justify-content: space-around;
       align-items: center;
-      background-color: #865c42;
+      background-color: $border-color;
     }
 
     .letters {
@@ -54,14 +55,15 @@ body {
       align-items: center;
       position: absolute;
       top: 803px;
+      left: 3px;
       font-size: 30px;
       color: #f0d9b5;
-      width: 806px;
-      background-color: #865c42;
+      width: 803px;
+      background-color: $border-color;
     }
 
     .game-board {
-      border: 3px solid #865c42;
+      border: 3px solid $border-color;
       width: 800px;
       height: 800px;
     }
@@ -69,6 +71,7 @@ body {
 
   .fallen-soldier-block {
     margin-left: 20px;
+    min-width: 200px;
 
     div {
       display: flex;

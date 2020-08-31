@@ -11,8 +11,8 @@ export default class Game extends React.Component {
         super();
         this.state = {
             squares: setUpBoard(),
-            whiteFallenSoldiers: [new Queen(1)],
-            blackFallenSoldiers: [new Queen(2)],
+            whiteFallenSoldiers: [],
+            blackFallenSoldiers: [],
             player: 1,
             sourceSelection: -1,
             status: '',
@@ -25,7 +25,7 @@ export default class Game extends React.Component {
 
         if (this.state.sourceSelection === -1) {
             if (!squares[i] || squares[i].player !== this.state.player) {
-                this.setState({status: "Wrong selection. Choose player " + this.state.turn + " pieces."});
+                this.setState({status: "Please choose player " + this.state.turn + " pieces"});
                 squares[i].style = {...squares[i].style, backgroundColor: " "};
 
             } else {
@@ -37,10 +37,13 @@ export default class Game extends React.Component {
                 });
             }
         } else if (this.state.sourceSelection > -1) {
-            squares[this.state.sourceSelection].style = { ...squares[this.state.sourceSelection].style, backgroundColor: "" };
+            squares[this.state.sourceSelection].style = {
+                ...squares[this.state.sourceSelection].style,
+                backgroundColor: ""
+            };
             if (squares[i] && squares[i].player === this.state.player) {
                 this.setState({
-                    status: "Wrong selection. Choose valid source and destination again.",
+                    status: "Wrong selection",
                     sourceSelection: -1,
                 });
             } else {
@@ -48,11 +51,11 @@ export default class Game extends React.Component {
                 const squares = this.state.squares.slice();
                 const whiteFallenSoldiers = this.state.whiteFallenSoldiers.slice();
                 const blackFallenSoldiers = this.state.blackFallenSoldiers.slice();
-                const isDestEnemyOccupied = squares[i] ? true : false;
+                const isDestEnemyOccupied = !!squares[i];
                 const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
                 const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
-                //const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(this.state.sourceSelection, i, isDestEnemyOccupied);
+                //const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(this.state.sourceSelection, i);
 
                 if (isMovePossible && isMoveLegal) {
                     if (squares[i] !== null) {
@@ -77,15 +80,15 @@ export default class Game extends React.Component {
                     });
                 } else {
                     this.setState({
-                        status: "Wrong selection. Choose valid source and destination again.",
+                        status: "Illegal move, please choose different square",
                         sourceSelection: -1,
                     });
                 }
+
             }
         }
 
     }
-
 
     isMoveLegal(srcToDestPath) {
         let isLegal = true;
@@ -100,51 +103,51 @@ export default class Game extends React.Component {
     render() {
 
         return (
-           <>
+            <>
 
-            <div className="board">
-                <div className="game-info">
-                    <h3>{this.state.turn} turn to move</h3>
-                    <div className="game-status">{this.state.status}</div>
-                </div>
-                <div className="game">
-                    <div className="game-board">
-                        <Board
-                            squares={this.state.squares}
-                            onClick={(i) => this.handleClick(i)}
+                <div className="board">
+                    <div className="game-info">
+                        <h3>{this.state.turn} turn to move</h3>
+                        <div className="game-status">{this.state.status}</div>
+                    </div>
+                    <div className="game">
+                        <div className="game-board">
+                            <Board
+                                squares={this.state.squares}
+                                onClick={(i) => this.handleClick(i)}
+                            />
+                        </div>
+                        <div className="numbers">
+                            <span>8</span>
+                            <span>7</span>
+                            <span>6</span>
+                            <span>5</span>
+                            <span>4</span>
+                            <span>3</span>
+                            <span>2</span>
+                            <span>1</span>
+                        </div>
+                        <div className="letters">
+                            <span>a</span>
+                            <span>b</span>
+                            <span>c</span>
+                            <span>d</span>
+                            <span>e</span>
+                            <span>f</span>
+                            <span>g</span>
+                            <span>h</span>
+                        </div>
+                    </div>
+                    <div className="fallen-soldier-block">
+
+                        {<FallenSoldierBlock
+                            whiteFallenSoldiers={this.state.whiteFallenSoldiers}
+                            blackFallenSoldiers={this.state.blackFallenSoldiers}
                         />
-                    </div>
-                    <div className="numbers">
-                        <span>8</span>
-                        <span>7</span>
-                        <span>6</span>
-                        <span>5</span>
-                        <span>4</span>
-                        <span>3</span>
-                        <span>2</span>
-                        <span>1</span>
-                    </div>
-                    <div className="letters">
-                        <span>a</span>
-                        <span>b</span>
-                        <span>c</span>
-                        <span>d</span>
-                        <span>e</span>
-                        <span>f</span>
-                        <span>g</span>
-                        <span>h</span>
+                        }
                     </div>
                 </div>
-                <div className="fallen-soldier-block">
-
-                    {<FallenSoldierBlock
-                        whiteFallenSoldiers={this.state.whiteFallenSoldiers}
-                        blackFallenSoldiers={this.state.blackFallenSoldiers}
-                    />
-                    }
-                </div>
-            </div>
-           </>
+            </>
         );
     }
 }

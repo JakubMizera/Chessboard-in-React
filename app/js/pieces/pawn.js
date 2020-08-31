@@ -14,15 +14,15 @@ class Pawn extends piece {
             2: [56, 57, 58, 59, 60, 61, 62, 63]
         }
     }
-    isQueeningPossible(src, dest, isDestEnemyOccupied) {
+    isQueeningPossible(src, dest) {
         if (this.player === 1) {
             if (dest === this.queeningPositions[1]) {
-                return Square[dest] = new Queen(1)// przeniesc do game-state
+                return true;
             }
         }
         if (this.player === 2) {
             if (dest === this.queeningPositions[2]) {
-                return new Queen(2);
+                return true;
             }
         }
     }
