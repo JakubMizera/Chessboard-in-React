@@ -32,6 +32,13 @@ class King extends piece {
         return [];
     }
 
+    isCastlingPossible(src, dest) {
+        if (src - 2 === dest || src + 2 === dest) {
+            return this.initialPositions[this.player].includes(dest);//returns true or false
+        }
+        return false;
+    }
+
 }
 
 export default King;

@@ -42,7 +42,7 @@ class Pawn extends piece {
     }
 
     isQueeningPossible(dest) {
-        return this.queeningPositions[this.player].includes(dest);
+        return this.queeningPositions[this.player].includes(dest);//returns true or false
     }
 
 }
