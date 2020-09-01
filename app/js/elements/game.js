@@ -7,6 +7,7 @@ import setUpBoard from "../helpers/boardSetUp";
 import Queen from "../pieces/queen";
 import Pawn from "../pieces/pawn";
 import King from "../pieces/king";
+import Rook from "../pieces/rook";
 
 
 export default class Game extends React.Component {
@@ -26,7 +27,8 @@ export default class Game extends React.Component {
     handleClick(i) {
         const squares = [...this.state.squares];
 
-        if (this.state.sourceSelection === -1) {
+        let src = this.state.sourceSelection;
+        if (src === -1) {
             if (!squares[i] || squares[i].player !== this.state.player) {
                 this.setState({status: "Please choose player " + this.state.turn + " pieces"});
                 squares[i].style = {...squares[i].style, backgroundColor: " "};
@@ -39,9 +41,9 @@ export default class Game extends React.Component {
                 });
                 squares[i].style = {...squares[i].style, backgroundColor: "rgb(55,83,67)"};
             }
-        } else if (this.state.sourceSelection > -1) {
-            squares[this.state.sourceSelection].style = {
-                ...squares[this.state.sourceSelection].style,
+        } else if (src > -1) {
+            squares[src].style = {
+                ...squares[src].style,
                 backgroundColor: ""
             };
             if (squares[i] && squares[i].player === this.state.player) {
@@ -55,8 +57,9 @@ export default class Game extends React.Component {
                 const whiteFallenPieces = [...this.state.whiteFallenPieces];
                 const blackFallenPieces = [...this.state.blackFallenPieces];
                 const isDestEnemyOccupied = !!squares[i];//empty square = false else true
-                const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);//checks if move is within rules
-                const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
+                const isMovePossible = squares[src]
+                    .isMovePossible(src, i, isDestEnemyOccupied);//checks if move is within rules
+                const srcToDestPath = squares[src].getSrcToDestPath(src, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
 
 
@@ -69,12 +72,8 @@ export default class Game extends React.Component {
                         }
                     }
 
-                    const queening = this.checkQueening(squares, i);
-                    //const castling = this.checkCastling(this.state.sourceSelection, i, squares);
+                    this.updateSquares(src, i, squares);
 
-                    squares[i] = queening === null ? squares[this.state.sourceSelection] : queening;
-                    //squares[i] = castling === null ? squares[this.state.sourceSelection] : castling;
-                    squares[this.state.sourceSelection] = null;//emptying square after capture
                     let player = this.state.player === 1 ? 2 : 1;//switching players turn
                     let turn = this.state.turn === 'white' ? 'black' : 'white';//wywalic niepotrzebne zmienna turn
 
@@ -98,6 +97,47 @@ export default class Game extends React.Component {
         }
 
     }
+
+    updateSquares(src, dest, squares) {
+        const queening = this.checkQueening(squares, dest);
+        const castling = this.checkCastling(src, dest, squares);
+
+        if (queening) {
+            squares[dest] = new Queen(this.state.player);
+        }
+        else if (castling) {
+            squares[dest] = squares[src];
+            if (src > dest) {
+                squares[src - 1] = squares[src - 4];
+                squares[src - 4] = null;
+            }
+            else {
+                squares[src + 1] = squares[src + 3];
+                squares[src + 3] = null;
+            }
+        }
+        else {
+            squares[dest] = squares[src];
+        }
+
+        squares[this.state.sourceSelection] = null;//emptying square after capture
+    }
+
+    //checks if pawn is clicked and renders new queen
+    checkQueening(squares, dest) {
+        if (squares[this.state.sourceSelection] instanceof Pawn) {
+            return squares[this.state.sourceSelection].isQueeningPossible(dest);
+        }
+        return false;
+    }
+
+    checkCastling(src, dest, squares) {
+        if (squares[this.state.sourceSelection] instanceof King) {
+            return squares[this.state.sourceSelection].isCastlingPossible(src, dest);
+        }
+        return false;
+    }
+
     //checks path of piece
     isMoveLegal(srcToDestPath) {
         let isLegal = true;
@@ -108,27 +148,6 @@ export default class Game extends React.Component {
         }
         return isLegal;
     }
-    //checks if pawn is clicked and renders new queen
-    checkQueening(squares, i) {
-        if (squares[this.state.sourceSelection] instanceof Pawn) {
-            const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(i);
-            if (isQueeningPossible) {
-                return new Queen(this.state.player);
-            }
-        }
-        return null;
-    }
-
-    // checkCastling(src, dest, squares) {
-    //     if (squares[this.state.sourceSelection] instanceof King) {
-    //         const isCastlingPossible = squares[this.state.sourceSelection].isCastlingPossible(src, dest);
-    //         if (isCastlingPossible) {
-    //             return squares[61] = new Rook(this.state.player);
-    //         }
-    //     }
-    //     return null;
-    // }
-
 
     render() {
 

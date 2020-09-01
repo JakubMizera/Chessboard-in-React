@@ -34,7 +34,7 @@ class King extends piece {
 
     isCastlingPossible(src, dest) {
         if (src - 2 === dest || src + 2 === dest) {
-            return this.initialPositions[this.player].includes(dest);//returns true or false
+            return this.initialPositions[this.player].includes(src);//returns true or false
         }
         return false;
     }
