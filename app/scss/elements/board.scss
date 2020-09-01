@@ -9,7 +9,9 @@ body {
 #page {
   display: flex;
 }
-
+button {
+  cursor: pointer;
+}
 
 .board {
   margin-left: 50%;

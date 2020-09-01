@@ -7,7 +7,7 @@ import setUpBoard from "../helpers/boardSetUp";
 import Queen from "../pieces/queen";
 import Pawn from "../pieces/pawn";
 import King from "../pieces/king";
-import Rook from "../pieces/rook";
+
 
 export default class Game extends React.Component {
     constructor() {
@@ -70,10 +70,10 @@ export default class Game extends React.Component {
                     }
 
                     const queening = this.checkQueening(squares, i);
-                    const castling = this.checkCastling(this.state.sourceSelection, i, squares);
+                    //const castling = this.checkCastling(this.state.sourceSelection, i, squares);
 
                     squares[i] = queening === null ? squares[this.state.sourceSelection] : queening;
-                    squares[i] = castling === null ? squares[this.state.sourceSelection] : castling;
+                    //squares[i] = castling === null ? squares[this.state.sourceSelection] : castling;
                     squares[this.state.sourceSelection] = null;//emptying square after capture
                     let player = this.state.player === 1 ? 2 : 1;//switching players turn
                     let turn = this.state.turn === 'white' ? 'black' : 'white';//wywalic niepotrzebne zmienna turn
@@ -119,15 +119,15 @@ export default class Game extends React.Component {
         return null;
     }
 
-    checkCastling(src, dest, squares) {
-        if (squares[this.state.sourceSelection] instanceof King) {
-            const isCastlingPossible = squares[this.state.sourceSelection].isCastlingPossible(src, dest);
-            if (isCastlingPossible) {
-                return squares[61] = new Rook(this.state.player);
-            }
-        }
-        return null;
-    }
+    // checkCastling(src, dest, squares) {
+    //     if (squares[this.state.sourceSelection] instanceof King) {
+    //         const isCastlingPossible = squares[this.state.sourceSelection].isCastlingPossible(src, dest);
+    //         if (isCastlingPossible) {
+    //             return squares[61] = new Rook(this.state.player);
+    //         }
+    //     }
+    //     return null;
+    // }
 
 
     render() {
