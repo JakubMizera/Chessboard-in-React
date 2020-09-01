@@ -37,6 +37,16 @@ export default function setUpBoard() {
     squares[61] = new Bishop(1);
     squares[58] = new Bishop(1);
 
+    //Queening tests
+    // for (let i = 8; i < 16; i++) {
+    //     squares[i] = new Pawn(1);
+    // }
+    //
+    // for (let i = 48; i < 56; i++) {
+    //     squares[i] = new Pawn(2);
+    // }
+
+
     return squares;
 }
 

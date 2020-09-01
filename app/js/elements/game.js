@@ -2,17 +2,18 @@ import React from 'react';
 
 import '../../scss/main.scss';
 import Board from './board.js';
-import FallenSoldierBlock from "./fallen-soldiers_block";
+import FallenPiecesBlock from "./fallen-pieces_block";
 import setUpBoard from "../helpers/boardSetUp";
 import Queen from "../pieces/queen";
+import Pawn from "../pieces/pawn";
 
 export default class Game extends React.Component {
     constructor() {
         super();
         this.state = {
             squares: setUpBoard(),
-            whiteFallenSoldiers: [],
-            blackFallenSoldiers: [],
+            whiteFallenPieces: [],
+            blackFallenPieces: [],
             player: 1,
             sourceSelection: -1,
             status: '',
@@ -21,20 +22,20 @@ export default class Game extends React.Component {
     }
 
     handleClick(i) {
-        const squares = this.state.squares.slice();
+        const squares = [...this.state.squares];
 
         if (this.state.sourceSelection === -1) {
             if (!squares[i] || squares[i].player !== this.state.player) {
                 this.setState({status: "Please choose player " + this.state.turn + " pieces"});
                 squares[i].style = {...squares[i].style, backgroundColor: " "};
 
-            } else {
-                squares[i].style = {...squares[i].style, backgroundColor: "rgb(55,83,67)"};
 
+            } else {
                 this.setState({
                     status: "Choose destination for the selected piece",
                     sourceSelection: i
                 });
+                squares[i].style = {...squares[i].style, backgroundColor: "rgb(55,83,67)"};
             }
         } else if (this.state.sourceSelection > -1) {
             squares[this.state.sourceSelection].style = {
@@ -43,37 +44,41 @@ export default class Game extends React.Component {
             };
             if (squares[i] && squares[i].player === this.state.player) {
                 this.setState({
-                    status: "Wrong selection",
+                    status: "You can't capture your own pieces",
                     sourceSelection: -1,
                 });
             } else {
 
-                const squares = this.state.squares.slice();
-                const whiteFallenSoldiers = this.state.whiteFallenSoldiers.slice();
-                const blackFallenSoldiers = this.state.blackFallenSoldiers.slice();
-                const isDestEnemyOccupied = !!squares[i];
-                const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
+                const squares = [...this.state.squares];
+                const whiteFallenPieces = [...this.state.whiteFallenPieces];
+                const blackFallenPieces = [...this.state.blackFallenPieces];
+                const isDestEnemyOccupied = !!squares[i];//empty square = false else true
+                const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);//checks if move is within rules
                 const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
-                //const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(this.state.sourceSelection, i);
+
 
                 if (isMovePossible && isMoveLegal) {
                     if (squares[i] !== null) {
                         if (squares[i].player === 1) {
-                            whiteFallenSoldiers.push(squares[i]);
+                            whiteFallenPieces.push(squares[i]);
                         } else {
-                            blackFallenSoldiers.push(squares[i]);
+                            blackFallenPieces.push(squares[i]);
                         }
                     }
-                    squares[i] = squares[this.state.sourceSelection];
-                    squares[this.state.sourceSelection] = null;
-                    let player = this.state.player === 1 ? 2 : 1;
-                    let turn = this.state.turn === 'white' ? 'black' : 'white';
+
+                    const queening = this.checkQueening(squares, i);
+
+                    squares[i] = queening === null ? squares[this.state.sourceSelection] : queening;
+                    squares[this.state.sourceSelection] = null;//emptying square after capture
+                    let player = this.state.player === 1 ? 2 : 1;//switching players turn
+                    let turn = this.state.turn === 'white' ? 'black' : 'white';//wywalic niepotrzebne zmienna turn
+
                     this.setState({
                         sourceSelection: -1,
                         squares: squares,
-                        whiteFallenSoldiers: whiteFallenSoldiers,
-                        blackFallenSoldiers: blackFallenSoldiers,
+                        whiteFallenPieces: whiteFallenPieces,
+                        blackFallenPieces: blackFallenPieces,
                         player: player,
                         status: '',
                         turn: turn
@@ -89,7 +94,7 @@ export default class Game extends React.Component {
         }
 
     }
-
+    //checks path of piece
     isMoveLegal(srcToDestPath) {
         let isLegal = true;
         for (let i = 0; i < srcToDestPath.length; i++) {
@@ -98,6 +103,16 @@ export default class Game extends React.Component {
             }
         }
         return isLegal;
+    }
+    //checks if pawn is clicked and renders new queen
+    checkQueening(squares, i) {
+        if (squares[this.state.sourceSelection] instanceof Pawn) {
+            const isQueeningPossible = squares[this.state.sourceSelection].isQueeningPossible(i);
+            if (isQueeningPossible) {
+                return new Queen(this.state.player);
+            }
+        }
+        return null;
     }
 
     render() {
@@ -140,9 +155,9 @@ export default class Game extends React.Component {
                     </div>
                     <div className="fallen-soldier-block">
 
-                        {<FallenSoldierBlock
-                            whiteFallenSoldiers={this.state.whiteFallenSoldiers}
-                            blackFallenSoldiers={this.state.blackFallenSoldiers}
+                        {<FallenPiecesBlock
+                            whiteFallenPieces={this.state.whiteFallenPieces}
+                            blackFallenPieces={this.state.blackFallenPieces}
                         />
                         }
                     </div>

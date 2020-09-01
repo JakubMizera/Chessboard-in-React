@@ -1,6 +1,5 @@
 import piece from "./piece";
 import Queen from "./queen";
-import Square from "../elements/square";
 
 class Pawn extends piece {
     constructor(player) {
@@ -12,18 +11,6 @@ class Pawn extends piece {
         this.queeningPositions = {
             1: [0, 1, 2, 3, 4, 5, 6, 7],
             2: [56, 57, 58, 59, 60, 61, 62, 63]
-        }
-    }
-    isQueeningPossible(src, dest) {
-        if (this.player === 1) {
-            if (dest === this.queeningPositions[1]) {
-                return true;
-            }
-        }
-        if (this.player === 2) {
-            if (dest === this.queeningPositions[2]) {
-                return true;
-            }
         }
     }
 
@@ -52,6 +39,10 @@ class Pawn extends piece {
             return [src + 8];
         }
         return [];
+    }
+
+    isQueeningPossible(dest) {
+        return this.queeningPositions[this.player].includes(dest);
     }
 
 }
