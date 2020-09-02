@@ -11,20 +11,25 @@ class King extends piece {
     }
 
     isMovePossible(src, dest, isDestEnemyOccupied, squares) {
-        const standardMove = (src - 9 === dest ||
+        console.log(this.hasMoved);
+        console.log(this.initialPositions[this.player]);
+        if (src - 9 === dest ||
             src - 8 === dest ||
             src - 7 === dest ||
             src + 1 === dest ||
             src + 9 === dest ||
             src + 8 === dest ||
             src + 7 === dest ||
-            src - 1 === dest);
-
-        if (src === this.initialPositions[this.player] && squares[src - 3] === null) {
-            return (standardMove || src - 2 === dest);
-        } else if (src === this.initialPositions[this.player]) {
-            return (standardMove || src + 2 === dest);
-        } else return standardMove;
+            src - 1 === dest) {
+            return true;
+        }
+        if (src === this.initialPositions[this.player] && this.hasMoved === false) {
+            if (src - 2 === dest && squares[src - 3] === null && squares[src - 4].hasMoved === false) {
+                return true;
+            } else if (src + 2 === dest && squares[src + 3].hasMoved === false) {
+                return true;
+            }
+        } else return false;
     }
 
     getSrcToDestPath(src, dest) {

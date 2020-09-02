@@ -26,8 +26,8 @@ export default class Game extends React.Component {
 
     handleClick(i) {
         const squares = [...this.state.squares];
-
         let src = this.state.sourceSelection;
+
         if (src === -1) {
             if (!squares[i] || squares[i].player !== this.state.player) {
                 this.setState({status: "Please choose player " + this.state.turn + " pieces"});
@@ -97,6 +97,7 @@ export default class Game extends React.Component {
         }
 
     }
+
     //move logic
     updateSquares(src, dest, squares) {
         const queening = this.checkQueening(squares, dest);
@@ -106,6 +107,7 @@ export default class Game extends React.Component {
             squares[dest] = new Queen(this.state.player);
         } else if (castling) {
             squares[dest] = squares[src];
+            squares[dest].hasMoved = true;
             //long castle
             if (src > dest) {
                 if (squares[src - 4] instanceof Rook) {
@@ -122,9 +124,10 @@ export default class Game extends React.Component {
             }
         } else {
             squares[dest] = squares[src];
+            squares[dest].hasMoved = true;
         }
 
-        squares[src] = null;//emptying square after capture
+        squares[src] = null;//emptying square after move
     }
 
     //checks if pawn is clicked and renders new queen
