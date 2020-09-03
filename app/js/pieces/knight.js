@@ -16,7 +16,7 @@ class Knight extends piece {
             src + 17 === dest);
     }
 
-    getSrcToDestPath(src, dest) {
+    getSrcToDestPath() {
         return [];
     }
 }
