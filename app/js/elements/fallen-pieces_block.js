@@ -17,12 +17,12 @@ export default class FallenPiecesBlock extends React.Component {
     render() {
         return (
             <div>
-                <div className="board-row">{this.props.whiteFallenPieces.map((ws, index) =>
-                    this.renderSquare(ws, index)
-                )}</div>
-                <div className="board-row">{this.props.blackFallenPieces.map((bs, index) =>
-                    this.renderSquare(bs, index)
-                )}</div>
+                <div className="board-row">
+                    {this.props.whiteFallenPieces.map((el, index) => this.renderSquare(el, index))}
+                </div>
+                <div className="board-row">
+                    {this.props.blackFallenPieces.map((el, index) => this.renderSquare(el, index))}
+                </div>
             </div>
         );
     }

@@ -92,7 +92,6 @@ export default class Game extends React.Component {
                         sourceSelection: -1,
                     });
                 }
-
             }
         }
 
