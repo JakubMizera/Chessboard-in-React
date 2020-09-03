@@ -11,8 +11,6 @@ class King extends piece {
     }
 
     isMovePossible(src, dest, isDestEnemyOccupied, squares) {
-        console.log(this.hasMoved);
-        console.log(this.initialPositions[this.player]);
         if (src - 9 === dest ||
             src - 8 === dest ||
             src - 7 === dest ||
@@ -23,7 +21,7 @@ class King extends piece {
             src - 1 === dest) {
             return true;
         }
-        if (src === this.initialPositions[this.player] && this.hasMoved === false) {
+        if (this.hasMoved === false) {
             if (src - 2 === dest && squares[src - 3] === null && squares[src - 4].hasMoved === false) {
                 return true;
             } else if (src + 2 === dest && squares[src + 3].hasMoved === false) {

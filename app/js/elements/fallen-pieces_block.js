@@ -5,7 +5,7 @@ import Square from './square.js';
 
 export default class FallenPiecesBlock extends React.Component {
 
-    renderSquare(square, i, squareShade) {
+    renderSquare(square, i) {
         return <Square
             key={i}
             keyVal={i}

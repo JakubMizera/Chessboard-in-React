@@ -29,12 +29,13 @@ export default class Game extends React.Component {
         let src = this.state.sourceSelection;
 
         if (src === -1) {
+            //checks if first click is on an empty square or on a opponent piece
             if (!squares[i] || squares[i].player !== this.state.player) {
                 this.setState({status: "Please choose player " + this.state.turn + " pieces"});
-                squares[i].style = {...squares[i].style, backgroundColor: " "};
-
-
-            } else {
+                squares[i].style = {...squares[i].style, backgroundColor: ""};
+            }
+            //gives back info to choose a square for a move
+            else {
                 this.setState({
                     status: "Choose destination for the selected piece",
                     sourceSelection: i
@@ -46,13 +47,13 @@ export default class Game extends React.Component {
                 ...squares[src].style,
                 backgroundColor: ""
             };
+            //checks if you moved on your own pieces
             if (squares[i] && squares[i].player === this.state.player) {
                 this.setState({
                     status: "You can't capture your own pieces",
                     sourceSelection: -1,
                 });
             } else {
-
                 const squares = [...this.state.squares];
                 const whiteFallenPieces = [...this.state.whiteFallenPieces];
                 const blackFallenPieces = [...this.state.blackFallenPieces];
@@ -61,7 +62,6 @@ export default class Game extends React.Component {
                     .isMovePossible(src, i, isDestEnemyOccupied, squares);//checks if move is within rules
                 const srcToDestPath = squares[src].getSrcToDestPath(src, i);
                 const isMoveLegal = this.isMoveLegal(srcToDestPath);
-
 
                 if (isMovePossible && isMoveLegal) {
                     if (squares[i] !== null) {
@@ -75,7 +75,7 @@ export default class Game extends React.Component {
                     this.updateSquares(src, i, squares);
 
                     let player = this.state.player === 1 ? 2 : 1;//switching players turn
-                    let turn = this.state.turn === 'white' ? 'black' : 'white';//is this necessary?
+                    let turn = this.state.turn === 'white' ? 'black' : 'white';
 
                     this.setState({
                         sourceSelection: -1,
@@ -100,7 +100,7 @@ export default class Game extends React.Component {
 
     //move logic
     updateSquares(src, dest, squares) {
-        const queening = this.checkQueening(squares, dest);
+        const queening = this.checkQueening(src, dest, squares);
         const castling = this.checkCastling(src, dest, squares);
 
         if (queening) {
@@ -131,9 +131,9 @@ export default class Game extends React.Component {
     }
 
     //checks if pawn is clicked and renders new queen
-    checkQueening(squares, dest) {
-        if (squares[this.state.sourceSelection] instanceof Pawn) {
-            return squares[this.state.sourceSelection].isQueeningPossible(dest);
+    checkQueening(src, dest, squares) {
+        if (squares[src] instanceof Pawn) {
+            return squares[src].isQueeningPossible(dest);
         }
         return false;
     }
